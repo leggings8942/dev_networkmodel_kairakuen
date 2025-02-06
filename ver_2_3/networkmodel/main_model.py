@@ -85,7 +85,7 @@ BY1MIN_PATH       = get_env_var("BY1MIN_PATH")
 INSTRUCT_PATH     = get_widgets_var('NETWORK_LIST')
 USE_MODEL_TYPE    = get_widgets_var('USE_MODEL_TYPE')
 ENABLE_GROUP_MODE = get_widgets_var('ENABLE_GROUP_MODE')
-TIME_INTERVAL     = get_env_var('TIME_INTERVAL')
+TIME_INTERVAL     = get_widgets_var('TIME_INTERVAL')
 
 # COMMAND ----------
 

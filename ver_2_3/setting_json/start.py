@@ -15,6 +15,7 @@ USE_MODEL_TYPE       = dbutils.widgets.get("USE_MODEL_TYPE")
 SPECIFIED_START_DATE = dbutils.widgets.get("SPECIFIED_START_DATE")
 SPECIFIED_END_DATE   = dbutils.widgets.get("SPECIFIED_END_DATE")
 ENABLE_GROUP_MODE    = dbutils.widgets.get("ENABLE_GROUP_MODE")
+TIME_INTERVAL        = dbutils.widgets.get("TIME_INTERVAL")
 
 # COMMAND ----------
 start_date = SPECIFIED_START_DATE
@@ -30,6 +31,7 @@ json_list = [
         "SPECIFIED_DATE":    date,
         "USE_MODEL_TYPE":    USE_MODEL_TYPE,
         "ENABLE_GROUP_MODE": ENABLE_GROUP_MODE,
+        "TIME_INTERVAL":     TIME_INTERVAL,
     }
     for date in day_list
 ]
