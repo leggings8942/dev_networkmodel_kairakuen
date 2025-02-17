@@ -133,7 +133,10 @@ def networkmodel(spec_comb:UseInterface, param_dict:dict) -> None:
     causality, centrality = nwm_daily(spec_comb.model, spec_comb.download, spec_comb.upload, t_unit, param_dict)
     # 2ファイルの出力
     spec_comb.upload.write_csv_file_for_nwm(t_unit, param_dict['date'], causality, centrality)
-    continuous_migration(spec_comb.download, spec_comb.upload, t_unit, param_dict['date'])
+    # 移動影響量の計算
+    migrate_num = int(param_dict['migrate_num'])
+    if migrate_num > 2:
+        continuous_migration(spec_comb.download, spec_comb.upload, t_unit, param_dict['date'], migrate_num)
     
     # 時間計測完了
     time_end   = time.perf_counter()

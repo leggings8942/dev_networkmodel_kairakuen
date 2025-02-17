@@ -75,17 +75,18 @@ def get_widgets_var(key:str) -> str:
 
 load_dotenv(join(os.getcwd(), '.env'))
 # 設定ファイルパスとファイル名((TODO:configリストのパス先は要検討))
-BASE_PATH         = get_env_var("BASE_PATH")
-WORK_PATH         = BASE_PATH + get_env_var("WORK_PATH")
+BASE_PATH           = get_env_var("BASE_PATH")
+WORK_PATH           = BASE_PATH + get_env_var("WORK_PATH")
 
-SPECIFIED_DATE    = get_widgets_var("SPECIFIED_DATE")
+SPECIFIED_DATE      = get_widgets_var("SPECIFIED_DATE")
 ANALYSIS_OBJ:Literal['AI_BEACON', 'GPS_DATA'] = get_widgets_var("ANALYSIS_OBJ")
-PROJECT_NAME      = get_widgets_var('PROJECT_NAME')
-BY1MIN_PATH       = get_env_var("BY1MIN_PATH")
-INSTRUCT_PATH     = get_widgets_var('NETWORK_LIST')
-USE_MODEL_TYPE    = get_widgets_var('USE_MODEL_TYPE')
-ENABLE_GROUP_MODE = get_widgets_var('ENABLE_GROUP_MODE')
-TIME_INTERVAL     = get_widgets_var('TIME_INTERVAL')
+PROJECT_NAME        = get_widgets_var('PROJECT_NAME')
+BY1MIN_PATH         = get_env_var("BY1MIN_PATH")
+INSTRUCT_PATH       = get_widgets_var('NETWORK_LIST')
+USE_MODEL_TYPE      = get_widgets_var('USE_MODEL_TYPE')
+ENABLE_GROUP_MODE   = get_widgets_var('ENABLE_GROUP_MODE')
+TIME_INTERVAL       = get_widgets_var('TIME_INTERVAL')
+MIGRATION_FLOOR_NUM = get_widgets_var('MIGRATION_FLOOR_NUM')
 
 # COMMAND ----------
 
@@ -146,6 +147,7 @@ if ANALYSIS_OBJ == "AI_BEACON":
         'ueid_list'    : utid_list,
         'folder_name'  : PROJECT_NAME,
         'interval'     : TIME_INTERVAL,
+        'migrate_num'  : MIGRATION_FLOOR_NUM,
     }
     
     # networkmodel処理
@@ -168,6 +170,7 @@ else:
         'ueid_list'    : peid_list,
         'folder_name'  : PROJECT_NAME,
         'interval'     : TIME_INTERVAL,
+        'migrate_num'  : MIGRATION_FLOOR_NUM,
     }
     
     # networkmodel処理

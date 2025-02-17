@@ -140,7 +140,7 @@ def calc_migration_fourth(df_devided:pd.DataFrame, df_migration:pd.DataFrame) ->
     return df_migrate
 
 
-def continuous_migration(use_dl:download_to_file, use_ul:upload_to_file, t_unit:Literal['daily', 'hourly'], date:str) -> None:
+def continuous_migration(use_dl:download_to_file, use_ul:upload_to_file, t_unit:Literal['daily', 'hourly'], date:str, migrate_num:int) -> None:
     # 時間計測開始
     time_start = time.perf_counter()
     print(f"{date}: 因果量・次数中心データファイル取得 計測開始")
@@ -156,6 +156,9 @@ def continuous_migration(use_dl:download_to_file, use_ul:upload_to_file, t_unit:
     tmp_path = 'output/人気エリア/' + t_unit + '/'
     use_ul.write_csv_file_with_date(tmp_path, centrality, date, '人気エリア')
     
+    # 番兵
+    if migrate_num <= 2:
+        return None
     
     # 時間計測開始
     time_start = time.perf_counter()
@@ -175,6 +178,9 @@ def continuous_migration(use_dl:download_to_file, use_ul:upload_to_file, t_unit:
     tmp_path = 'intermediate/' + t_unit + '/'
     use_ul.write_csv_file(tmp_path, df_migration, date, 'migration_3')
     
+    # 番兵
+    if migrate_num <= 3:
+        return None
     
     # 時間計測開始
     time_start = time.perf_counter()

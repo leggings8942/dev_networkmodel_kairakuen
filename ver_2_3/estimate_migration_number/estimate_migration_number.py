@@ -76,17 +76,18 @@ load_dotenv(join(os.getcwd(), '.env'))
 BASE_PATH = get_env_var("BASE_PATH")
 WORK_PATH = BASE_PATH + get_env_var("WORK_PATH")
 
-SPECIFIED_DATE     = get_widgets_var("SPECIFIED_DATE")
+SPECIFIED_DATE      = get_widgets_var("SPECIFIED_DATE")
 ANALYSIS_OBJ:Literal['AI_BEACON', 'GPS_DATA'] = get_widgets_var("ANALYSIS_OBJ")
-PROJECT_NAME       = get_widgets_var('PROJECT_NAME')
-BASE_PATH          = WORK_PATH + PROJECT_NAME + '/'
-ESTIM_VISIT_NAME   = get_env_var("ESTIM_VISIT_NAME")
-ESTIM_VISIT_D_PATH = get_env_var("ESTIM_VISIT_D_PATH")
-ESTIM_VISIT_H_PATH = get_env_var("ESTIM_VISIT_H_PATH")
-CAUSALITY_D_PATH   = get_env_var("CAUSALITY_D_PATH")
-CAUSALITY_H_PATH   = get_env_var("CAUSALITY_H_PATH")
-OUTPUT_PATH        = get_env_var("OUTPUT_PATH")
-ENABLE_GROUP_MODE  = get_widgets_var("ENABLE_GROUP_MODE")
+PROJECT_NAME        = get_widgets_var('PROJECT_NAME')
+BASE_PATH           = WORK_PATH + PROJECT_NAME + '/'
+ESTIM_VISIT_NAME    = get_env_var("ESTIM_VISIT_NAME")
+ESTIM_VISIT_D_PATH  = get_env_var("ESTIM_VISIT_D_PATH")
+ESTIM_VISIT_H_PATH  = get_env_var("ESTIM_VISIT_H_PATH")
+CAUSALITY_D_PATH    = get_env_var("CAUSALITY_D_PATH")
+CAUSALITY_H_PATH    = get_env_var("CAUSALITY_H_PATH")
+OUTPUT_PATH         = get_env_var("OUTPUT_PATH")
+ENABLE_GROUP_MODE   = get_widgets_var("ENABLE_GROUP_MODE")
+MIGRATION_FLOOR_NUM = get_widgets_var('MIGRATION_FLOOR_NUM')
 
 # COMMAND ----------
 
@@ -110,6 +111,7 @@ print(ANALYSIS_OBJ)
 print(date)
 
 # COMMAND ----------
-ENABLE_GROUP_MODE = True if ENABLE_GROUP_MODE.lower() in ['true', 't'] else False
+ENABLE_GROUP_MODE   = True if ENABLE_GROUP_MODE.lower() in ['true', 't'] else False
+MIGRATION_FLOOR_NUM = int(MIGRATION_FLOOR_NUM)
 
-calc_estimate_migration_number(original_EM(ANALYSIS_OBJ, BASE_PATH, 'daily',  ESTIM_VISIT_NAME, ESTIM_VISIT_D_PATH, CAUSALITY_D_PATH, OUTPUT_PATH, date, ENABLE_GROUP_MODE))
+calc_estimate_migration_number(original_EM(ANALYSIS_OBJ, BASE_PATH, 'daily',  ESTIM_VISIT_NAME, ESTIM_VISIT_D_PATH, CAUSALITY_D_PATH, OUTPUT_PATH, date, ENABLE_GROUP_MODE), MIGRATION_FLOOR_NUM)

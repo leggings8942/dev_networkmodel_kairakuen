@@ -36,8 +36,9 @@ def remove_move_pop(df_move_pop:DataFrame) -> DataFrame:
             .filter(col('move_pop') >= 1)
     return res
     
-def calc_estimate_migration_number(model:calc_estimate_migration):
-    for target, hierarchy in zip(['causality', 'migration_3', 'migration_4'], [2, 3, 4]):
+def calc_estimate_migration_number(model:calc_estimate_migration, migrate_num:int):
+    zip_list = list(zip(['causality', 'migration_3', 'migration_4'], [2, 3, 4]))[0:migrate_num-1]
+    for target, hierarchy in zip_list:
         # 1時間単位集計の推定来訪者数を取得(E=MC^2におけるCに相当する部分)
         df_visit_cnt = model.read_visitor_count()
         # df_visit_cnt.display()
