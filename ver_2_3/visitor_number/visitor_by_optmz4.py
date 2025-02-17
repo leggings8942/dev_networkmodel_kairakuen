@@ -139,7 +139,7 @@ if not os.path.isdir(intermediate_path_daily):
     os.makedirs(intermediate_path_daily,exist_ok=True)
 # csv出力
 df_output_daily = df_aib_estimated\
-                    .select(['user_id','place_id',unique_id,'date','visitor_number'])\
+                    .select(['user_id','place_id',unique_id,'date','a1_rand_coef','visitor_number'])\
                     .toPandas()
 df_output_daily.set_index('user_id')\
     .to_csv(intermediate_path_daily+filename)
@@ -195,7 +195,7 @@ if not os.path.isdir(intermediate_path_hourly):
     os.makedirs(intermediate_path_hourly,exist_ok=True)
 # csv出力
 df_output_hourly = df_with_coef\
-                    .select(['user_id','place_id',unique_id,'date','hour','visitor_number'])\
+                    .select(['user_id','place_id',unique_id,'date','hour','a1_rand_coef','visitor_number'])\
                     .toPandas()
 df_output_hourly.set_index('user_id')\
     .to_csv(intermediate_path_hourly+filename)
