@@ -16,6 +16,7 @@ SPECIFIED_START_DATE = dbutils.widgets.get("SPECIFIED_START_DATE")
 SPECIFIED_END_DATE   = dbutils.widgets.get("SPECIFIED_END_DATE")
 ENABLE_GROUP_MODE    = dbutils.widgets.get("ENABLE_GROUP_MODE")
 TIME_INTERVAL        = dbutils.widgets.get("TIME_INTERVAL")
+MIGRATION_FLOOR_NUM  = dbutils.widgets.get("MIGRATION_FLOOR_NUM")
 
 # COMMAND ----------
 start_date = SPECIFIED_START_DATE
@@ -25,13 +26,14 @@ day_list   = [d.strftime("%Y-%m-%d") for d in pd.date_range(start_date, end_date
 # COMMAND ----------
 json_list = [
     {
-        "ANALYSIS_OBJ":      ANALYSIS_OBJ,
-        "NETWORK_LIST":      NETWORK_LIST,
-        "PROJECT_NAME":      PROJECT_NAME,
-        "SPECIFIED_DATE":    date,
-        "USE_MODEL_TYPE":    USE_MODEL_TYPE,
-        "ENABLE_GROUP_MODE": ENABLE_GROUP_MODE,
-        "TIME_INTERVAL":     TIME_INTERVAL,
+        "ANALYSIS_OBJ":        ANALYSIS_OBJ,
+        "NETWORK_LIST":        NETWORK_LIST,
+        "PROJECT_NAME":        PROJECT_NAME,
+        "SPECIFIED_DATE":      date,
+        "USE_MODEL_TYPE":      USE_MODEL_TYPE,
+        "ENABLE_GROUP_MODE":   ENABLE_GROUP_MODE,
+        "TIME_INTERVAL":       TIME_INTERVAL,
+        "MIGRATION_FLOOR_NUM": MIGRATION_FLOOR_NUM,
     }
     for date in day_list
 ]
