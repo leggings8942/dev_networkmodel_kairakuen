@@ -1,5 +1,6 @@
 # Databricks notebook source
 %pip install python-dotenv==1.0.1
+%pip install xxhash==3.5.0
 
 # COMMAND ----------
 import os

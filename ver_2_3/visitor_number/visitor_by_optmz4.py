@@ -2,6 +2,8 @@
 # version1.1
 # ver1.1:RSSIでフィルタ・「aibeaconid・yyyymmdd:hh」でユニーク
 
+# nagino hiroya --2025/02/18  乱数の生成アルゴリズムの変更
+
 # COMMAND ----------
 WORK_PATH         = dbutils.widgets.get("WORK_PATH")
 AIBEACON_PATH     = dbutils.widgets.get("AIBEACON_PATH")
@@ -25,10 +27,12 @@ import numpy as np
 import pandas as pd
 
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import lit
+from pyspark.sql.functions import lit, udf
 from pyspark.sql import types as T
-from pyspark.sql.types import StringType, IntegerType
+from pyspark.sql.types import StringType, IntegerType, FloatType
 import pyspark.sql.functions as F
+
+import xxhash
 
 # COMMAND ----------
 
@@ -90,6 +94,17 @@ random_val_avg = 1.7
 
 # COMMAND ----------
 
+# 文字列から[0,1]実数への変換
+def str2float(s:str) -> float:
+    s = str(s)
+    h = xxhash.xxh3_64(s, seed=seed_value).intdigest()
+    r = h / (2**64 - 1)
+    return r
+
+udf_s2f = udf(str2float, returnType=FloatType())
+
+# COMMAND ----------
+
 # 設定ファイル読み込み
 config = (spark.read\
             .option('inferSchema', 'False')
@@ -113,12 +128,17 @@ df_aib_count = spark.read\
             .parquet(count_path_daily)
 # df_aib_count.display()
 #乱数適用
+# 追記 - 2025/02/18
+# F.rand(seed_value) を利用した乱数の生成では、同一のunique_idに別の乱数を適用してしまう場合がある
+# 　　・input file内のunique_idの順番に対して変更・書換が起こった場合
+#  ・別のプロジェクトで同一のunique_idを利用していてかつ、同一の乱数を適用したい場合
+# そのため、ハッシュ関数を利用した乱数の生成を行うことに決定した
 df_aib_estimated = df_aib_count\
                 .withColumn('a1_coef', F.lit(a1))\
                 .withColumn('random_val_avg', F.lit(random_val_avg))\
                 .withColumn('random_rate_ul', F.lit(random_rate_ul))\
                 .withColumn('random_rate_ll', F.lit(random_rate_ll))\
-                .withColumn('free_degree', random_val_avg*(F.rand(seed_value)* (random_rate_ul - random_rate_ll) + random_rate_ll))\
+                .withColumn('free_degree', random_val_avg*(udf_s2f(unique_id) * (random_rate_ul - random_rate_ll) + random_rate_ll))\
                 .withColumn('a1_rand_coef', F.col('a1_coef')*F.col('random_val_avg')*F.col('free_degree'))\
                 .withColumn('visitor_number_long', F.col('daily_count')*F.col('a1_rand_coef'))\
                 .withColumn('visitor_number', F.col('visitor_number_long').cast(IntegerType()))\
