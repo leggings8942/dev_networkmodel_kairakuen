@@ -45,7 +45,7 @@ import pandas as pd
 
 from model.networkmodel import networkmodel
 from model._interface import UseInterface
-from _injector import public_VAR, original_VAR, original_SVAR
+from _injector import public_VAR, original_VAR, original_SVAR, original_NNVAR
 from _injector import original_UL, original_DL
 
 
@@ -112,7 +112,7 @@ if   USE_MODEL_TYPE.lower() in ['external', 'external library', 'external_librar
 elif USE_MODEL_TYPE.lower() in ['sparse',   'sparse model',     'sparse_model',     'sm']:
     use_model = original_SVAR()                                                                    # 使用する時系列解析モデル
 else:
-    use_model = original_VAR()                                                                     # 使用する時系列解析モデル
+    use_model = original_NNVAR()                                                                   # 使用する時系列解析モデル
 use_upload   = original_UL(ANALYSIS_OBJ, WORK_PATH + PROJECT_NAME)                                 # 使用するアップロードクラス
 use_download = original_DL(ANALYSIS_OBJ, WORK_PATH + PROJECT_NAME, BY1MIN_PATH, ENABLE_GROUP_MODE) # 使用するダウンロードクラス
 spec_comb    = UseInterface(use_model, use_upload, use_download)

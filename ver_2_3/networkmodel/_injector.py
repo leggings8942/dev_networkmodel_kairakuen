@@ -9,6 +9,7 @@ from model._interface import time_series_model
 from model._interface import upload_to_file, download_to_file
 from my_lib.time_series_model import Vector_Auto_Regressive
 from my_lib.time_series_model import Sparse_Vector_Auto_Regressive
+from my_lib.time_series_model import Non_Negative_Vector_Auto_Regressive
 
 
 
@@ -91,6 +92,29 @@ class original_SVAR(time_series_model):
         return self.wrap_model.fit(lags=lags, offset=offset, solver=solver)
     
     def select_order(self, maxlag:int=15, ic:str="aic", solver:str="FISTA") -> int:
+        return self.wrap_model.select_order(maxlag=maxlag, ic=ic, solver=solver, isVisible=True)
+    
+    def irf(self, period:int, orth:bool, isStdDevShock:bool) -> np.ndarray[np.float64]:
+        return self.wrap_model.irf(period=period, orth=orth, isStdDevShock=isStdDevShock)
+    
+    def get_coef(self) -> tuple[np.ndarray[np.float64], np.ndarray[np.float64]]:
+        return self.wrap_model.get_coefficient()
+
+class original_NNVAR(time_series_model):
+    def __init__(self, tol:float=1e-8, max_iterate:int=3e5) -> None:
+        super().__init__()
+        self.wrap_model:Non_Negative_Vector_Auto_Regressive = None
+        self.tol         = tol
+        self.max_iterate = round(max_iterate)
+    
+    def register(self, data:pd.DataFrame) -> bool:
+        self.wrap_model = Non_Negative_Vector_Auto_Regressive(data.to_numpy(), tol=self.tol, isStandardization=True, max_iterate=self.max_iterate)
+        return True
+    
+    def fit(self, lags:int=1, offset:int=0, solver:str="Optimizer Rafael") -> bool:
+        return self.wrap_model.fit(lags=lags, offset=offset, solver=solver)
+    
+    def select_order(self, maxlag:int=15, ic:str="aic", solver:str="Optimizer Rafael") -> int:
         return self.wrap_model.select_order(maxlag=maxlag, ic=ic, solver=solver, isVisible=True)
     
     def irf(self, period:int, orth:bool, isStdDevShock:bool) -> np.ndarray[np.float64]:
