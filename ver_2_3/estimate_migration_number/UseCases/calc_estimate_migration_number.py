@@ -33,7 +33,7 @@ def create_move_pop(key_list:list[str], df_move_val:DataFrame, df_visit_cnt:Data
 
 def remove_move_pop(df_move_pop:DataFrame) -> DataFrame:
     res = df_move_pop\
-            .filter(col('move_pop') >= 1)
+            .filter(col('move_pop') >= 0.5)
     return res
     
 def calc_estimate_migration_number(model:calc_estimate_migration, migrate_num:int):
