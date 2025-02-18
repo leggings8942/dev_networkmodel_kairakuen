@@ -5,6 +5,9 @@
 # nagino hiroya --2025/02/18  乱数の生成アルゴリズムの変更
 
 # COMMAND ----------
+%pip install xxhash==3.5.0
+
+# COMMAND ----------
 WORK_PATH         = dbutils.widgets.get("WORK_PATH")
 AIBEACON_PATH     = dbutils.widgets.get("AIBEACON_PATH")
 PROJECT_NAME      = dbutils.widgets.get("PROJECT_NAME")
